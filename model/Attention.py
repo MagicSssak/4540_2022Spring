@@ -29,7 +29,7 @@ class Attention(nn.Module):
         return x.permute(0, 2, 1, 3)  # wm,(bs,12,197,64)
 
     def forward(self, x, memory = None):
-        # hidden_states为：(bs,197,768)
+        # hidden_states：(bs,197,768)
         if memory is None:
             mixed_query_layer = self.query(x)#wm,768->768
             mixed_key_layer = self.key(x)#wm,768->768
