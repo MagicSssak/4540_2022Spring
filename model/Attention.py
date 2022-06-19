@@ -14,9 +14,9 @@ class Attention(nn.Module):
         self.attention_head_size = int(config.hidden_state / self.num_attention_heads)  # 768/12=64
         self.all_head_size = self.num_attention_heads * self.attention_head_size  # 12*64=768
 
-        self.query = nn.Linear(config.hidden_state, self.all_head_size)#wm,768->768，Wq矩阵为（768,768）
-        self.key = nn.Linear(config.hidden_state, self.all_head_size)#wm,768->768,Wk矩阵为（768,768）
-        self.value = nn.Linear(config.hidden_state, self.all_head_size)#wm,768->768,Wv矩阵为（768,768）
+        self.query = nn.Linear(config.hidden_state, self.all_head_size)#wm,768->768，Wq（768,768）
+        self.key = nn.Linear(config.hidden_state, self.all_head_size)#wm,768->768,Wk（768,768）
+        self.value = nn.Linear(config.hidden_state, self.all_head_size)#wm,768->768,Wv（768,768）
         self.out = nn.Linear(config.hidden_state, config.hidden_state)  # wm,768->768
         self.attn_dropout = nn.Dropout(config.dropout)
         self.proj_dropout = nn.Dropout(config.dropout)
@@ -50,9 +50,9 @@ class Attention(nn.Module):
             # （bs,12,197,197)
             att_score = torch.matmul(q, k.transpose(-1, -2))#（bs,12,197,197)
 
-            att_score = att_score / math.sqrt(self.attention_head_size)#将结果除以向量维数的开方
+            att_score = att_score / math.sqrt(self.attention_head_size)
             att_score = att_score + mask
-            att_prob = self.softmax(att_score)#将得到的分数进行softmax,得到概率
+            att_prob = self.softmax(att_score)
 
 
 
@@ -72,7 +72,7 @@ class Attention(nn.Module):
         weights = att_prob if self.return_weights else None  # wm
         att_prob = self.attn_dropout(att_prob)
 
-        context_layer = torch.matmul(att_prob, v)#将概率与内容向量相乘
+        context_layer = torch.matmul(att_prob, v)
 
         context_layer = context_layer.permute(0, 2, 1, 3).contiguous()
         new_context_layer_shape = context_layer.size()[:-2] + (self.all_head_size,)#wm,(bs,197)+(768,)=(bs,197,768)
