@@ -9,7 +9,7 @@ from config import get_config
 config = get_config()
 class Embeddings(nn.Module):
     '''
-    对图像进行编码，把图片当做一个句子，把图片分割成块，每一块表示一个单词
+    Embedd graph into tokens.
     '''
 
     def __init__(self, config,  in_channels=3, pe_type = 'learnable'):
@@ -32,7 +32,7 @@ class Embeddings(nn.Module):
         else:
             self.embedding = Learnable_embedding(config,n_patches)
 
-        # 设置可学习的分类信息的维度
+        
         self.classifer_token = nn.Parameter(torch.zeros(1, 1, config.hidden_state))
         self.dropout = nn.Dropout((config.transformer['dropout']))
 
