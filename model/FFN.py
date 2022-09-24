@@ -9,7 +9,7 @@ class FFN(nn.Module):
         super(FFN, self).__init__()
         self.fc1 = nn.Linear(config.hidden_state, config.transformer['mlp_dim'])#wm,786->3072
         self.fc2 = nn.Linear(config.transformer['mlp_dim'], config.hidden_state)#wm,3072->786
-        self.act_fn = F.gelu#wm,act func
+        self.act_fn = F.gelu
         self.dropout = nn.Dropout(config.transformer['dropout'])
 
         self._init_weights(config.init_type)
