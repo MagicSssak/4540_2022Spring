@@ -8,4 +8,4 @@
 
 ### Pretrained models(including other variants of ViT)
 
-![image](https://github.com/MagicSssak/4540_2022Spring/blob/main/pretraining.png)
+![image](https://github.com/MagicSssak/4540_2022Spring/blob/main/figure/pretraining.png)
